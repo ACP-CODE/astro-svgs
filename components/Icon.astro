@@ -1,0 +1,16 @@
+---
+import path from 'path';
+
+export interface Props {
+    name: string;
+    class?: string;
+}
+
+const { name, class: className } = Astro.props;
+const file = path.join('/_astro', 'sprite.svg');
+---
+<span class:list={["o-icon", `${className||''}`]}>
+    <svg class={`svg-${name}`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <use xlink:href={`${file}#${name}`} xmlns:xlink="http://www.w3.org/1999/xlink" />
+    </svg>
+</span>

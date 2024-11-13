@@ -1,26 +1,57 @@
 {
-  "name": "svgs",
-  "version": "0.0.1",
+  "name": "astro-svgs",
+  "version": "1.0.0",
+  "description": "Astro SVG Sprite - Simple, Compact, and Completely Self-Contained.",
   "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./Icon.astro": {
+      "types": "./components/icon.ts",
+      "import": "./components/icon.ts"
+    }
   },
   "files": [
-    "src",
-    "index.ts"
+    "dist/index.d.ts",
+    "dist/index.mjs",
+    "components"
   ],
+  "scripts": {
+    "fmt": "prettier --write .",
+    "build": "unbuild",
+    "prepublishOnly": "npm run build"
+  },
   "keywords": [
-    "withastro"
+    "astro",
+    "astro-integration",
+    "astro-component",
+    "sprite",
+    "icon",
+    "icons"
   ],
-  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ACP-CODE/astro-svgs.git"
+  },
+  "author": "Junlin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ACP-CODE/astro-svgs/issues"
+  },
+  "homepage": "https://github.com/ACP-CODE/astro-svgs#readme",
   "devDependencies": {
-    "astro": "^4.16.10"
+    "astro": "^4.16.10",
+    "prettier": "^3.3.3",
+    "unbuild": "^2.0.0",
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
     "astro": "^4.0.0"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "typescript": "^5.6.3"
   }
 }
