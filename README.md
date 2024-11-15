@@ -34,7 +34,6 @@ $ npm install astro-svgs
 import { defineConfig } from "astro/config";
 import svgs from "astro-svgs";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [svgs()],
 });
@@ -58,8 +57,8 @@ export default defineConfig({
 
 ```js
 ---
-import Icon from 'astro-svgs/Icon.astro';
 import Layout from '~/Layouts/Layout.astro';
+import Icon from 'astro-svgs/Icon.astro';
 ---
 <Layout>
   {/* name is the `file name` of the icon you need*/}
@@ -81,7 +80,6 @@ All the interfaces are here.
 import { defineConfig } from "astro/config";
 import svgs from "astro-svgs";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     svgs({
