@@ -57,8 +57,8 @@ export default defineConfig({
 
 ```js
 ---
-import Icon from 'astro-svgs/Icon.astro';
 import Layout from '~/Layouts/Layout.astro';
+import Icon from 'astro-svgs/Icon.astro';
 ---
 <Layout>
   {/* name is the `file name` of the icon you need*/}
