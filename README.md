@@ -34,7 +34,6 @@ $ npm install astro-svgs
 import { defineConfig } from "astro/config";
 import svgs from "astro-svgs";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [svgs()],
 });
@@ -81,7 +80,6 @@ All the interfaces are here.
 import { defineConfig } from "astro/config";
 import svgs from "astro-svgs";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     svgs({
