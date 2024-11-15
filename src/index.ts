@@ -2,7 +2,7 @@ import type { AstroIntegration, AstroConfig } from "astro";
 import { defaults } from "./core";
 import { create } from "./plugin";
 
-export const name = "astro-svgs"
+export const name = "astro-svgs";
 
 export interface SVGsOptions {
   input?: string | string[];
@@ -12,18 +12,16 @@ export interface SVGsOptions {
 export type Precision = "low" | "medium" | "high";
 
 export default function svgs(options?: SVGsOptions): AstroIntegration {
-  let config: AstroConfig;
+  // let config: AstroConfig;
   const opts = { ...defaults, ...options };
 
   return {
     name,
     hooks: {
-      "astro:config:setup": async ({ config: cfg, updateConfig }) => {
-        config = cfg;
-
+      "astro:config:setup": async ({ config: cfg, updateConfig, logger }) => {
         updateConfig({
           vite: {
-            plugins: [create(opts, config)],
+            plugins: [create(opts, cfg, logger)],
           },
         });
       },

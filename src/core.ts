@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import type { SVGsOptions } from ".";
 import { minify, beautify, md5 } from "./helpers";
+import type { AstroIntegrationLogger } from "astro";
 
 export const defaults: SVGsOptions = {
   input: "src/svgs",
@@ -9,15 +10,16 @@ export const defaults: SVGsOptions = {
 };
 
 interface Sprite {
-  data: string,
-  hash: string,
+  data: string;
+  hash: string;
 }
 
-export const compose = async ({
-  input,
-  compress,
-}: SVGsOptions): Promise<Sprite> => {
-  let data = '', hash='';
+export const compose = async (
+  { input, compress }: SVGsOptions,
+  logger: AstroIntegrationLogger,
+): Promise<Sprite> => {
+  let data = "",
+    hash = "";
 
   try {
     // Make sure `input` is a valid array
@@ -26,8 +28,8 @@ export const compose = async ({
 
     for (const inputPath of inputs) {
       // Check if `inputPath` is valid
-      if (!inputPath || !await fs.stat(inputPath).catch(() => false)) {
-        console.warn(`Invalid directory: ${inputPath}`);
+      if (!inputPath || !(await fs.stat(inputPath).catch(() => false))) {
+        logger.warn(`Invalid directory: ${inputPath}`);
         continue;
       }
 
@@ -67,8 +69,7 @@ export const compose = async ({
     data = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${spriteContent}</defs></svg>`;
 
     data = compress ? minify(data, compress) : beautify(data);
-    hash = md5(data)
-
+    hash = md5(data);
   } catch (error) {
     console.error("Error generating SVG sprite:", error);
   }

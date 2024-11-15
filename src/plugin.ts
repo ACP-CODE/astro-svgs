@@ -1,9 +1,13 @@
-import type { AstroConfig } from "astro";
+import type { AstroConfig, AstroIntegrationLogger } from "astro";
 import type { Plugin } from "vite";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
 
-export const create = (options: SVGsOptions, config: AstroConfig): Plugin => {
+export const create = (
+  options: SVGsOptions,
+  config: AstroConfig,
+  logger: AstroIntegrationLogger,
+): Plugin => {
   const virtualModuleId = "virtual:astro-svgs";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
@@ -15,7 +19,7 @@ export const create = (options: SVGsOptions, config: AstroConfig): Plugin => {
 
     async configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        ({ data, hash } = await compose(options));
+        ({ data, hash } = await compose(options, logger));
         if (req.url?.startsWith(base)) {
           res.setHeader("Content-Type", "image/svg+xml");
           res.setHeader("Cache-Control", "no-cache");
@@ -27,7 +31,7 @@ export const create = (options: SVGsOptions, config: AstroConfig): Plugin => {
     },
 
     async buildStart() {
-      ({ data, hash } = await compose(options));
+      ({ data, hash } = await compose(options, logger));
 
       if (!this.meta.watchMode) {
         fileId = this.emitFile({
@@ -52,13 +56,13 @@ export const create = (options: SVGsOptions, config: AstroConfig): Plugin => {
     },
 
     async handleHotUpdate({ file, server }) {
-      ({ data, hash } = await compose(options));
+      ({ data, hash } = await compose(options, logger));
 
       const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
       if (mod) {
         server.moduleGraph.invalidateModule(mod);
       }
-      
+
       server.ws.send({ type: "full-reload" });
       return [];
     },
