@@ -7,6 +7,6 @@ export default defineBuildConfig({
     emitCJS: false,
     // esbuild: {
     //   minify: true,
-    // }
+    // },
   },
 });

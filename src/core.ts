@@ -2,17 +2,18 @@ import fs from "fs/promises";
 import path from "path";
 import type { SVGsOptions } from ".";
 import { minify, beautify } from "./helpers";
-import type { AstroConfig } from "astro";
 
 export const defaults: SVGsOptions = {
   input: "src/svgs",
   compress: "high",
 };
 
-export const genSprite = async (
-  { input = "", compress }: SVGsOptions,
-  config: AstroConfig,
-) => {
+export const compose = async ({
+  input = "",
+  compress,
+}: SVGsOptions): Promise<string> => {
+  let sprite = "";
+
   try {
     const inputs = Array.isArray(input) ? input : [input];
     const svgFiles: string[] = [];
@@ -51,17 +52,18 @@ export const genSprite = async (
       )
     ).join(compress ? "" : "\n");
 
-    let sprite = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${spriteContent}</defs></svg>`;
+    sprite = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${spriteContent}</defs></svg>`;
 
     sprite = compress ? minify(sprite, compress) : beautify(sprite);
 
-    const dest = new URL(config.build.assets, config.publicDir);
-    await fs.mkdir(dest, { recursive: true });
+    // const dest = new URL(config.build.assets, config.publicDir);
+    // await fs.mkdir(dest, { recursive: true });
 
-    const file = path.join(dest.pathname, "sprite.svg");
-    await fs.writeFile(file, sprite, "utf8");
-
+    // const file = path.join(dest.pathname, "sprite.svg");
+    // await fs.writeFile(file, sprite, "utf8");
   } catch (error) {
     console.error("Error generating SVG sprite:", error);
   }
+
+  return sprite;
 };
