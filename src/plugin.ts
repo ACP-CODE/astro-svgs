@@ -1,5 +1,6 @@
 import type { AstroConfig, AstroIntegrationLogger } from "astro";
 import type { Plugin } from "vite";
+import path from 'path';
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
 
@@ -56,15 +57,15 @@ export const create = (
     },
 
     async handleHotUpdate({ file, server }) {
-      ({ data, hash } = await compose(options, logger));
-
-      const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
-      if (mod) {
-        server.moduleGraph.invalidateModule(mod);
+      const filePath = path.dirname(file);
+      if (Array.isArray(options.input) && options.input.some((input) => filePath.includes(input))) {
+        const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+        if (mod) {
+          server.moduleGraph.invalidateModule(mod);
+        }
+        server.ws.send({ type: "full-reload" });
+        return [];
       }
-
-      server.ws.send({ type: "full-reload" });
-      return [];
     },
   };
 };
