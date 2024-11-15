@@ -1,4 +1,9 @@
 import type { Precision } from ".";
+import { createHash } from "crypto";
+
+export function md5(content: string): string {
+  return createHash("md5").update(content).digest("hex").slice(0, 8);
+}
 
 export function minify(content: string, level: Precision): string {
   content = content.replace(/\s{2,}/g, " ");

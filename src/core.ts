@@ -1,24 +1,36 @@
 import fs from "fs/promises";
 import path from "path";
 import type { SVGsOptions } from ".";
-import { minify, beautify } from "./helpers";
+import { minify, beautify, md5 } from "./helpers";
 
 export const defaults: SVGsOptions = {
   input: "src/svgs",
   compress: "high",
 };
 
+interface Sprite {
+  data: string,
+  hash: string,
+}
+
 export const compose = async ({
-  input = "",
+  input,
   compress,
-}: SVGsOptions): Promise<string> => {
-  let sprite = "";
+}: SVGsOptions): Promise<Sprite> => {
+  let data = '', hash='';
 
   try {
+    // Make sure `input` is a valid array
     const inputs = Array.isArray(input) ? input : [input];
     const svgFiles: string[] = [];
 
     for (const inputPath of inputs) {
+      // Check if `inputPath` is valid
+      if (!inputPath || !await fs.stat(inputPath).catch(() => false)) {
+        console.warn(`Invalid directory: ${inputPath}`);
+        continue;
+      }
+
       const dirFiles = (await fs.readdir(inputPath)).filter((file) =>
         file.endsWith(".svg"),
       );
@@ -52,18 +64,14 @@ export const compose = async ({
       )
     ).join(compress ? "" : "\n");
 
-    sprite = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${spriteContent}</defs></svg>`;
+    data = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${spriteContent}</defs></svg>`;
 
-    sprite = compress ? minify(sprite, compress) : beautify(sprite);
+    data = compress ? minify(data, compress) : beautify(data);
+    hash = md5(data)
 
-    // const dest = new URL(config.build.assets, config.publicDir);
-    // await fs.mkdir(dest, { recursive: true });
-
-    // const file = path.join(dest.pathname, "sprite.svg");
-    // await fs.writeFile(file, sprite, "utf8");
   } catch (error) {
     console.error("Error generating SVG sprite:", error);
   }
 
-  return sprite;
+  return { data, hash };
 };
