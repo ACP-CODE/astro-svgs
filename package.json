@@ -1,7 +1,7 @@
 {
   "name": "astro-svgs",
-  "version": "1.0.0",
-  "description": "Astro SVG Sprite - Simple, Compact, and Completely Self-Contained.",
+  "version": "1.0.1",
+  "description": "Astro SVG Sprite offers a seamless SVG management experience: lightweight, hot-reloaded, and fully self-contained for streamlined development.",
   "type": "module",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -31,8 +31,13 @@
     "astro-integration",
     "astro-component",
     "sprite",
+    "sprite.svg",
     "icon",
-    "icons"
+    "icons",
+    "generate",
+    "Icon.astro",
+    "vitural:astro-svgs",
+    "@svgs/sprite.svg"
   ],
   "repository": {
     "type": "git",
