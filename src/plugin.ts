@@ -1,19 +1,19 @@
 import type { AstroConfig, AstroIntegrationLogger } from "astro";
 import type { Plugin } from "vite";
-import path from 'path';
+import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
 
-export const create = (
+export function create(
   options: SVGsOptions,
   config: AstroConfig,
   logger: AstroIntegrationLogger,
-): Plugin => {
-  const virtualModuleId = "virtual:astro-svgs";
+): Plugin {
+  const virtualModuleId = `virtual:${name}`;
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   const base = "/@svgs/sprite.svg";
-  let fileId: string, hash: string, data: string, filePath: string;
+  let fileId: string, data: string, hash: string, filePath: string;
 
   return {
     name,
@@ -52,13 +52,17 @@ export const create = (
 
     async load(id) {
       if (id === resolvedVirtualModuleId) {
-        return `export const file = '${filePath ?? `${base}?v=${hash}`}';`;
+        filePath = filePath ?? `${base}?v=${hash}`;
+        return `export const file = "${filePath}";`;
       }
     },
 
     async handleHotUpdate({ file, server }) {
       const filePath = path.dirname(file);
-      if (Array.isArray(options.input) && options.input.some((input) => filePath.includes(input))) {
+      if (
+        Array.isArray(options.input) &&
+        options.input.some((input) => filePath.includes(input))
+      ) {
         const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
         if (mod) {
           server.moduleGraph.invalidateModule(mod);
@@ -68,4 +72,4 @@ export const create = (
       }
     },
   };
-};
+}
