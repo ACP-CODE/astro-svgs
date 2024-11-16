@@ -76,7 +76,7 @@ export async function compose(
     data = compress !== "beautify" ? minify(data, compress!) : format(data);
     hash = md5(data);
   } catch (error) {
-    console.error("Error generating SVG sprite:", error);
+    console.error(error);
   }
 
   return { data, hash, symbolIds };
