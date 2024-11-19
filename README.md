@@ -18,7 +18,7 @@ $ npx astro add astro-svgs
 ## Usage
 
 <details>
-<summary>Manual Setup</summary>
+<summary>Manual setup</summary>
 
 #### Setup
 
@@ -78,7 +78,7 @@ Start the server with `npm run dev`, then access the virtual `sprite.svg` at `ht
 </details>
 
 <details>
-<summary>API Reference</summary>
+<summary>API reference</summary>
 <br>
 
 All configuration options are provided here.
