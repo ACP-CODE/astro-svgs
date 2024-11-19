@@ -137,6 +137,8 @@ export async function compose({
       throw err;
     }
   }
+
   // logger.print(name);
+
   return { data, hash, symbolIds };
 }
