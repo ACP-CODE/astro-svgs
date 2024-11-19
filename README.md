@@ -1,7 +1,7 @@
 # Overview
 
-[![Build Status](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml/badge.svg?style=flat-square)](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml)
 [![NPM Version](https://img.shields.io/npm/v/astro-svgs?label=astro-svgs&labelColor=dark&color=light)](https://www.npmjs.com/package/astro-svgs)
+[![Build Status](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml/badge.svg?style=flat-square)](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml)
 
 A compact, flexible solution for managing SVG sprites in Astro projects.
 
