@@ -7,7 +7,8 @@ export default defineBuildConfig({
     emitCJS: false,
     esbuild: {
       // minify: true,
-      // minifyIdentifiers: true,
+      minifyIdentifiers: true,
+      // minifyWhitespace: true,
     },
   },
 });
