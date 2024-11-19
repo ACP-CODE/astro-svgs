@@ -1,8 +1,10 @@
-import type { AstroConfig, AstroIntegrationLogger } from "astro";
+import type { AstroConfig } from "astro";
 import type { Plugin } from "vite";
+import fs from "fs/promises";
 import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
+import { virtual } from "./modules";
 
 export function create(options: SVGsOptions, config: AstroConfig): Plugin {
   const virtualModuleId = `virtual:${name}`;
@@ -54,18 +56,30 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
     },
 
     async handleHotUpdate({ file, server }) {
-      // const filePath = path.dirname(file);
-      // if (
-      //   Array.isArray(options.input) &&
-      //   options.input.some((input) => filePath.includes(input))
-      // ) {
-      const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
-      if (mod) {
-        server.moduleGraph.invalidateModule(mod);
+      const filePathDir = path.dirname(file);
+
+      if (
+        Array.isArray(options.input) &&
+        options.input.some((input) => filePathDir.includes(input))
+      ) {
+        ({ hash, data } = await compose(options)); // 更新 hash 和 data
+        filePath = `${base}?v=${hash}`; // 更新 filePath
+
+        const { filename, content } = await virtual(options);
+        const typeFile = new URL(
+          `.astro/integrations/${name}/${filename}`,
+          config.root,
+        );
+        await fs.writeFile(typeFile, content);
+
+        const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+        if (mod) {
+          server.moduleGraph.invalidateModule(mod);
+        }
+
+        server.ws.send({ type: "full-reload" });
+        return [];
       }
-      server.ws.send({ type: "full-reload" });
-      return [];
-      // }
     },
   };
 }
