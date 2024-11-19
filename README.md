@@ -19,9 +19,8 @@ $ npx astro add astro-svgs
 
 <details>
 <summary>Manual Setup</summary>
-<br>
 
-### Setup
+#### Setup
 
 - **Step 1**: To install manually, run:
 
@@ -68,7 +67,7 @@ $ npx astro add astro-svgs
   </Layout>
   ```
 
-### Live Access
+#### Live Access
 
 > [!NOTE]
 >
