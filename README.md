@@ -73,7 +73,7 @@ If you run into issues, try with [Manual Setup](#setup) guide.
 
 > [!NOTE]
 >
-> Set `compress` to `import.meta.env.DEV ? 'beauty' : 'high'` for clearer SVGs in development.
+> Set `compress` to `import.meta.env.DEV ? 'beautify' : 'high'` for clearer SVGs in development.
 
 Start the server with `npm run dev`, then access the virtual `sprite.svg` at `http://localhost:4321/@svgs/sprite.svg`.
 
@@ -101,7 +101,7 @@ export default defineConfig({
       /**
        * @default: "high"
        */
-      compress: import.meta.env.DEV ? "beauty" : "high",
+      compress: import.meta.env.DEV ? "beautify" : "high",
     }),
   ],
 });
