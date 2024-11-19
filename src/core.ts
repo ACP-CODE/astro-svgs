@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { type SVGsOptions, Error1, name } from ".";
 import { getSvgFiles, minify, format, md5 } from "./helpers";
-import { logger } from "./utils/logger";
+// import { logger } from "./utils/logger";
 
 export const defaults: SVGsOptions = {
   input: "src/svgs",
