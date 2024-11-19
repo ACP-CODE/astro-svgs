@@ -61,7 +61,7 @@ If you run into issues, try with [Manual Setup](#setup) guide.
   ```js
   ---
   import Layout from '~/Layouts/Layout.astro';
-  import Icon from 'astro-svgs/Icon.astro';
+  import { Icon } from 'astro-svgs/Icon.astro';
   ---
   <Layout>
     {/* Type hints and checks are provided by `.astro/integrations/astro-svgs/types.d.ts`, which is automatically generated in development mode (`npm run dev`) and updated whenever the config changes. */}
