@@ -4,11 +4,7 @@ import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
 
-export function create(
-  options: SVGsOptions,
-  config: AstroConfig,
-  logger: AstroIntegrationLogger,
-): Plugin {
+export function create(options: SVGsOptions, config: AstroConfig): Plugin {
   const virtualModuleId = `virtual:${name}`;
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
@@ -20,7 +16,7 @@ export function create(
 
     async configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        ({ data, hash } = await compose(options, logger));
+        ({ data, hash } = await compose(options));
         if (req.url?.startsWith(base)) {
           res.setHeader("Content-Type", "image/svg+xml");
           res.setHeader("Cache-Control", "no-cache");
@@ -32,7 +28,7 @@ export function create(
     },
 
     async buildStart() {
-      ({ data, hash } = await compose(options, logger));
+      ({ data, hash } = await compose(options));
 
       if (!this.meta.watchMode) {
         fileId = this.emitFile({
@@ -58,18 +54,18 @@ export function create(
     },
 
     async handleHotUpdate({ file, server }) {
-      const filePath = path.dirname(file);
-      if (
-        Array.isArray(options.input) &&
-        options.input.some((input) => filePath.includes(input))
-      ) {
-        const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
-        if (mod) {
-          server.moduleGraph.invalidateModule(mod);
-        }
-        server.ws.send({ type: "full-reload" });
-        return [];
+      // const filePath = path.dirname(file);
+      // if (
+      //   Array.isArray(options.input) &&
+      //   options.input.some((input) => filePath.includes(input))
+      // ) {
+      const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+      if (mod) {
+        server.moduleGraph.invalidateModule(mod);
       }
+      server.ws.send({ type: "full-reload" });
+      return [];
+      // }
     },
   };
 }
