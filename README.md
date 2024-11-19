@@ -105,7 +105,7 @@ export default defineConfig({
 });
 ```
 
-> **Output**: The sprite file will automatically be generated in `config.build.assets` during the build process (e.g., `_astro/sprite.43a97aac.svg`).
+> **Output**: The sprite file will automatically be built in `config.build.assets` during the build process (e.g., `_astro/sprite.43a97aac.svg`).
 
 </details>
 
