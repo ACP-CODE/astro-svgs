@@ -1,26 +1,24 @@
-import type { AstroConfig, AstroIntegrationLogger } from "astro";
+import type { AstroConfig } from "astro";
 import type { Plugin } from "vite";
-import path from 'path';
+import fs from "fs/promises";
+import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
+import { virtual } from "./modules";
 
-export const create = (
-  options: SVGsOptions,
-  config: AstroConfig,
-  logger: AstroIntegrationLogger,
-): Plugin => {
-  const virtualModuleId = "virtual:astro-svgs";
+export function create(options: SVGsOptions, config: AstroConfig): Plugin {
+  const virtualModuleId = `virtual:${name}`;
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   const base = "/@svgs/sprite.svg";
-  let fileId: string, hash: string, data: string, filePath: string;
+  let fileId: string, data: string, hash: string, filePath: string;
 
   return {
     name,
 
     async configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        ({ data, hash } = await compose(options, logger));
+        ({ data, hash } = await compose(options));
         if (req.url?.startsWith(base)) {
           res.setHeader("Content-Type", "image/svg+xml");
           res.setHeader("Cache-Control", "no-cache");
@@ -32,7 +30,7 @@ export const create = (
     },
 
     async buildStart() {
-      ({ data, hash } = await compose(options, logger));
+      ({ data, hash } = await compose(options));
 
       if (!this.meta.watchMode) {
         fileId = this.emitFile({
@@ -52,20 +50,36 @@ export const create = (
 
     async load(id) {
       if (id === resolvedVirtualModuleId) {
-        return `export const file = '${filePath ?? `${base}?v=${hash}`}';`;
+        filePath = filePath ?? `${base}?v=${hash}`;
+        return `export const file = "${filePath}";`;
       }
     },
 
     async handleHotUpdate({ file, server }) {
-      const filePath = path.dirname(file);
-      if (Array.isArray(options.input) && options.input.some((input) => filePath.includes(input))) {
+      const filePathDir = path.dirname(file);
+
+      if (
+        Array.isArray(options.input) &&
+        options.input.some((input) => filePathDir.includes(input))
+      ) {
+        ({ hash, data } = await compose(options)); // 更新 hash 和 data
+        filePath = `${base}?v=${hash}`; // 更新 filePath
+
+        const { filename, content } = await virtual(options);
+        const typeFile = new URL(
+          `.astro/integrations/${name}/${filename}`,
+          config.root,
+        );
+        await fs.writeFile(typeFile, content);
+
         const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
         if (mod) {
           server.moduleGraph.invalidateModule(mod);
         }
+
         server.ws.send({ type: "full-reload" });
         return [];
       }
     },
   };
-};
+}

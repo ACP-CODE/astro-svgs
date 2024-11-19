@@ -1,7 +1,7 @@
 {
   "name": "astro-svgs",
-  "version": "1.0.1",
-  "description": "Astro SVG Sprite offers a seamless SVG management experience: lightweight, hot-reloaded, and fully self-contained for streamlined development.",
+  "version": "1.1.0",
+  "description": "A compact solution for SVG sprites in Astro projects. It automates symbol ID management, supports hot reloading, and generates optimized SVG sprites with minimal setup—ideal for seamless SVG icon integration.",
   "type": "module",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -12,8 +12,7 @@
       "import": "./dist/index.mjs"
     },
     "./Icon.astro": {
-      "types": "./components/icon.ts",
-      "import": "./components/icon.ts"
+      "import": "./components/index.ts"
     }
   },
   "files": [
@@ -31,13 +30,21 @@
     "astro-integration",
     "astro-component",
     "sprite",
-    "sprite.svg",
+    "svg",
+    "svgs",
     "icon",
     "icons",
     "generate",
-    "Icon.astro",
-    "vitural:astro-svgs",
-    "@svgs/sprite.svg"
+    "component",
+    "unique",
+    "symbols",
+    "defs",
+    "optimization",
+    "svgo",
+    "svgmin",
+    "dynamic-svg",
+    "svg-sprite-generator",
+    "intelligent-prompting"
   ],
   "repository": {
     "type": "git",
