@@ -62,7 +62,7 @@ $ npx astro add astro-svgs
   import Icon from 'astro-svgs/Icon.astro';
   ---
   <Layout>
-    {/* Set the name as the `file name` of the desired icon */}
+    {/* Type hints and checks are provided by `.astro/integrations/astro-svgs/types.d.ts`, which is automatically generated in development mode (`npm run dev`) and updated whenever the config changes. */}
     <Icon name="a" class="<CustomClassName>" />
   </Layout>
   ```
