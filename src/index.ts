@@ -28,12 +28,6 @@ export class Error1 extends Error {
 
   constructor(message: string) {
     super(message);
-    this.name = `[${name}]`;
-
-    // 捕获堆栈信息，确保错误信息和堆栈正确显示
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, Error1);
-    }
   }
 }
 
