@@ -1,4 +1,3 @@
-
 # Overview
 
 [![Build Status](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml/badge.svg?style=flat-square)](https://github.com/ACP-CODE/astro-svgs/actions/workflows/ci.yaml)
@@ -70,11 +69,13 @@ $ npx astro add astro-svgs
   ```
 
 ### Live Access
+
 > [!NOTE]
-> 
+>
 > Set `compress` to `import.meta.env.DEV ? 'beauty' : 'high'` for clearer SVGs in development.
 
 Start the server with `npm run dev`, then access the virtual `sprite.svg` at `http://localhost:4321/@svgs/sprite.svg`.
+
 </details>
 
 <details>
@@ -99,8 +100,8 @@ export default defineConfig({
       /**
        * @default: "high"
        */
-      compress: import.meta.env.DEV ? 'beauty' : 'high',
-    })
+      compress: import.meta.env.DEV ? "beauty" : "high",
+    }),
   ],
 });
 ```
