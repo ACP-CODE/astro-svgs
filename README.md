@@ -12,20 +12,22 @@ It automates symbol ID management, supports hot reloading, and generates optimiz
 Quickly install with the `astro add` command:
 
 ```shell
-$ npx astro add astro-svgs
+npx astro add astro-svgs
 ```
+
+If you run into issues, try with [Manual Setup](#setup) guide.
 
 ## Usage
 
 <details>
-<summary>Manual setup</summary>
+<summary>Manual Setup</summary>
 
 #### Setup
 
 - **Step 1**: To install manually, run:
 
   ```shell
-  $ npm install astro-svgs
+  npm install astro-svgs
   ```
 
 - **Step 2**: Add the integration to your Astro config file (`astro.config.*`):
@@ -78,7 +80,7 @@ Start the server with `npm run dev`, then access the virtual `sprite.svg` at `ht
 </details>
 
 <details>
-<summary>API reference</summary>
+<summary>API Reference</summary>
 <br>
 
 All configuration options are provided here.
