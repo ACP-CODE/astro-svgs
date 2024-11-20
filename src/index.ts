@@ -32,11 +32,12 @@ export class Error1 extends Error {
 }
 
 export default function svgs(options?: SVGsOptions): AstroIntegration {
-  const opts = { ...defaults, ...options };
+  let opts = { ...defaults, ...options };
   return {
     name,
     hooks: {
-      "astro:config:setup": async ({ config, updateConfig }) => {
+      "astro:config:setup": async ({ config, command: cmd, updateConfig }) => {
+        opts.compress = cmd === "dev" ? "beautify" : opts?.compress;
         updateConfig({
           vite: {
             plugins: [create(opts, config)],
