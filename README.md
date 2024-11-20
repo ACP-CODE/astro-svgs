@@ -47,31 +47,29 @@ If you run into issues, try with [Manual Setup](#setup) guide.
   ```plaintext
   /
   ├── src/
-  │   ├── svgs/
-  │   │   ├── a.svg
-  │   │   ├── b.svg
-  │   │   └── c.svg
-  │   └── pages/
-  │       └── index.astro
+  │   ├── pages/
+  │   │   └── index.astro
+  │   └── svgs/
+  │       ├── a.svg
+  │       ├── b.svg
+  │       └── *.svg
   └── package.json
   ```
 
 - **Step 4**: Use the built-in `Icon.astro` component to render icons from the sprite:
 
-  ```js
+  ```ts
   ---
   import Layout from '~/Layouts/Layout.astro';
   import { Icon } from 'astro-svgs/Icon.astro';
   ---
   <Layout>
-    {/* Type hints and checks are provided by `.astro/integrations/astro-svgs/types.d.ts`, which is automatically generated in development mode (`npm run dev`) and updated whenever the config changes. */}
+    {/* Type hints and checks are provided by `.astro/integrations/astro-svgs/types.d.ts`. */}
     <Icon name="a" class="<CustomClassName>" />
   </Layout>
   ```
 
 #### Live Access
-
-> Set `compress` to `import.meta.env.DEV ? 'beautify' : 'high'` for clearer SVGs in development.
 
 Start the server with `npm run dev`, then access the virtual `sprite.svg` at `http://localhost:4321/@svgs/sprite.svg`.
 
@@ -79,9 +77,10 @@ Start the server with `npm run dev`, then access the virtual `sprite.svg` at `ht
 
 <details>
 <summary>API Reference</summary>
-<br>
 
-All configuration options are provided here.
+### Integration API
+
+Full configuration reference
 
 ```js
 // @ts-check
@@ -89,23 +88,58 @@ import { defineConfig } from "astro/config";
 import svgs from "astro-svgs";
 
 export default defineConfig({
+  build: {
+    assets: "_astro",
+    // assetsPrefix: env.SITE_URL,
+  }
   integrations: [
     svgs({
       /**
        * Folder paths containing SVG files to generate `sprite.svg`
        * @default "src/svgs"
        */
-      input: ["src/assets/sprites", "src/assets/images"],
+      input: ["src/assets/sprites", "src/assets/icons"],
       /**
-       * @default: "high"
+       * @default
+       * isDev ? "beatfify" : "high"
        */
-      compress: import.meta.env.DEV ? "beautify" : "high",
+      compress: "beautify",
     }),
   ],
 });
 ```
 
 > **Output**: The sprite file will automatically be built in `config.build.assets` during the build process (e.g., `_astro/sprite.43a97aac.svg`).
+
+### Component API
+
+#### `file`
+
+**type**: `string` the sprite.svg file path.
+
+#### `SymbolId`
+
+**type**: `Union Type` The svg file unique name you want to use.
+
+#### Eg1: `src/components/Icon.astro`
+
+Creating a simple custom `Icon.astro` using the component API.
+
+```ts
+---
+import { file, type SymbolId } from 'virtual:astro-svgs';
+export interface Props {
+    name: SymbolId;
+}
+
+const { name } = Astro.props;
+---
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <use xlink:href={`${file}#${name}`} xmlns:xlink="http://www.w3.org/1999/xlink" />
+</svg>
+```
+
+> The virtual module definition is automatically generated when the server starts with npm run dev and is located at `.astro/integrations/astro-svgs/types.d.ts`.
 
 </details>
 
