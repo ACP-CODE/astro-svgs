@@ -119,7 +119,7 @@ export default defineConfig({
 
 #### `SymbolId`
 
-**type**: `Union Type` The svg file unique name you want to use.
+**type**: `Union Type` The svg file unique name you should use.
 
 #### Eg1: `src/components/Icon.astro`
 
@@ -139,7 +139,7 @@ const { name } = Astro.props;
 </svg>
 ```
 
-> The virtual module definition is automatically generated when the server starts with npm run dev and is located at `.astro/integrations/astro-svgs/types.d.ts`.
+> The virtual module definition is automatically generated when the server starts with `npm run dev` and is located at `.astro/integrations/astro-svgs/types.d.ts`.
 
 </details>
 
