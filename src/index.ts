@@ -12,11 +12,9 @@ export interface SVGsOptions {
    */
   input?: string | string[];
   /**
-   * @default "high"
-   * @example Dynamic setup based on environment
-   * ```ts
-   * compress: isDev ? 'beautify' : 'high',
-   * ```
+   * Compression level of `sprite.svg` file.
+   * @default
+   * isDev ? 'beautify' : 'high',
    */
   compress?: Precision;
 }

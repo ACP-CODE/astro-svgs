@@ -1,17 +1,16 @@
 import type { AstroConfig } from "astro";
 import type { Plugin } from "vite";
-import fs from "fs/promises";
-import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
-import { virtual } from "./modules";
+import { genTypeFile } from "./modules";
 
 export function create(options: SVGsOptions, config: AstroConfig): Plugin {
   const virtualModuleId = `virtual:${name}`;
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   const base = "/@svgs/sprite.svg";
-  let fileId: string, data: string, hash: string, filePath: string;
+  let fileId: string, data: string, hash: string, filePath: string, typeFileUpdated: boolean;;
+  const inputs = Array.isArray(options.input) ? options.input : [options.input];
 
   return {
     name,
@@ -26,6 +25,14 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
         } else {
           next();
         }
+      });
+
+      server.watcher.on("unlink", async (file) => {
+        typeFileUpdated = await genTypeFile(file, options, config);
+      });
+
+      server.watcher.on("add", async (file) => {
+        typeFileUpdated = await genTypeFile(file, options, config);
       });
     },
 
@@ -56,29 +63,25 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
     },
 
     async handleHotUpdate({ file, server }) {
-      const filePathDir = path.dirname(file);
+      const wathFile = inputs.some((input) => file.includes(input!)) && file.endsWith(".svg");
 
-      if (
-        Array.isArray(options.input) &&
-        options.input.some((input) => filePathDir.includes(input))
-      ) {
-        ({ hash, data } = await compose(options)); // 更新 hash 和 data
-        filePath = `${base}?v=${hash}`; // 更新 filePath
+      if (wathFile || typeFileUpdated) {
+        const { data: Data, hash: Hash } = await compose(options);
 
-        const { filename, content } = await virtual(options);
-        const typeFile = new URL(
-          `.astro/integrations/${name}/${filename}`,
-          config.root,
-        );
-        await fs.writeFile(typeFile, content);
+        if (Hash !== hash) {
+          hash = Hash;
+          data = Data;
+          filePath = `${base}?v=${hash}`;
 
-        const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
-        if (mod) {
-          server.moduleGraph.invalidateModule(mod);
+          const mod = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+          if (mod) {
+            server.moduleGraph.invalidateModule(mod);
+          }
+
+          server.ws.send({ type: "full-reload" });
         }
 
-        server.ws.send({ type: "full-reload" });
-        return [];
+        return []; // Returns null to avoid further processing
       }
     },
   };
