@@ -9,8 +9,10 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   const base = "/@svgs/sprite.svg";
-  let fileId: string, data: string, hash: string, filePath: string, typeFileUpdated: boolean;;
+  let fileId: string, data: string, hash: string, filePath: string;
+
   const inputs = Array.isArray(options.input) ? options.input : [options.input];
+  let typeFileUpdated: boolean;
 
   return {
     name,
@@ -63,7 +65,8 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
     },
 
     async handleHotUpdate({ file, server }) {
-      const wathFile = inputs.some((input) => file.includes(input!)) && file.endsWith(".svg");
+      const wathFile =
+        inputs.some((input) => file.includes(input!)) && file.endsWith(".svg");
 
       if (wathFile || typeFileUpdated) {
         const { data: Data, hash: Hash } = await compose(options);
