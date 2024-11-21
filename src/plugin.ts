@@ -9,8 +9,7 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   const base = "/@svgs/sprite.svg";
-  let fileId: string, data: string, hash: string, filePath: string, typeFileUpdated: boolean;;
-  const inputs = Array.isArray(options.input) ? options.input : [options.input];
+  let fileId: string, data: string, hash: string, filePath: string;
 
   const inputs = Array.isArray(options.input) ? options.input : [options.input];
   let typeFileUpdated: boolean;
