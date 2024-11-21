@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { type SVGsOptions, Error1, name } from ".";
-import { getSvgFiles, minify, format, md5 } from "./helpers";
+import { mkdir, getSvgFiles, minify, format, md5 } from "./helpers";
 // import { logger } from "./utils/logger";
 
 export const defaults: SVGsOptions = {
@@ -31,9 +31,13 @@ export async function compose({
 
     for (const inputDir of inputs) {
       if (!inputDir || !(await fs.stat(inputDir).catch(() => false))) {
-        err = new Error1(`Invalid directory`);
-        err.hint = `Ensure \`${inputDir}\` exists and is accessible.`;
-        throw err;
+        if (inputDir === "src/svgs") {
+          await mkdir(inputDir);
+        } else {
+          err = new Error1(`Invalid directory`);
+          err.hint = `Ensure \`${inputDir}\` exists and is accessible.`;
+          throw err;
+        }
       }
 
       const dirFiles = await getSvgFiles(inputDir);
