@@ -2,9 +2,45 @@ import type { Precision } from ".";
 import { createHash } from "crypto";
 import fs from "fs/promises";
 import path from "path";
+import * as readline from "readline";
 
 export const md5 = (content: string): string =>
   createHash("md5").update(content).digest("hex").slice(0, 8);
+
+export async function promptCreateDir(dirPath: string | URL): Promise<boolean> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    const pathStr = dirPath instanceof URL ? dirPath.pathname : dirPath;
+    rl.question(
+      `Directory "${pathStr}" does not exist. Would you like to create it? (y/yes to confirm): `,
+      async (answer) => {
+        rl.close();
+        if (answer.toLowerCase() === "y" || answer.toLowerCase() === "yes") {
+          await fs.mkdir(pathStr, { recursive: true });
+          console.log(`Directory "${pathStr}" has been created.`);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      },
+    );
+  });
+}
+
+export async function mkdir(path: string | URL): Promise<void> {
+  const dirPath = path instanceof URL ? path.pathname : path;
+
+  try {
+    await fs.mkdir(dirPath, { recursive: true });
+    // console.log(`Directory created at: ${dirPath}`);
+  } catch (error) {
+    console.error(`Error creating directory at ${dirPath}:`, error);
+  }
+}
 
 export function isValidSvg(content: string): boolean {
   return false;
