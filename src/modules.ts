@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import { type SVGsOptions, name } from ".";
 import { compose } from "./core";
+import { mkdir } from "./helpers";
 
 export async function virtual(opts: SVGsOptions): Promise<InjectedType> {
   let filename = "types.d.ts";
@@ -37,7 +38,7 @@ export async function genTypeFile(
   const typeFile = new URL(`.astro/integrations/${name}/${filename}`, cfg.root);
 
   try {
-    await fs.mkdir(path.dirname(typeFile.pathname), { recursive: true });
+    // await mkdir(typeFile);
     await fs.writeFile(typeFile, content);
   } catch (err) {
     console.error(err);
