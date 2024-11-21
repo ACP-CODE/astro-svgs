@@ -19,7 +19,7 @@ export interface SVGsOptions {
   compress?: Precision;
 }
 
-export type Precision = "low" | "medium" | "high" | "beautify";
+export type Precision = "beautify" | "low" | "medium" | "high";
 
 export class Error1 extends Error {
   hint?: string;
