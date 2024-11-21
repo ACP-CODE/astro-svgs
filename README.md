@@ -53,7 +53,7 @@ If you run into issues, try with [Manual Setup](#setup) guide.
   │       ├── a.svg
   │       ├── b.svg
   │       └── *.svg
-  └── package.json
+  └── astro.config.mjs
   ```
 
 - **Step 4**: Use the built-in `Icon.astro` component to render icons from the sprite:
