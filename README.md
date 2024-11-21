@@ -90,7 +90,7 @@ import svgs from "astro-svgs";
 export default defineConfig({
   build: {
     assets: "_astro",
-    // assetsPrefix: env.SITE_URL,
+    assetsPrefix: env.SITE_URL,
   },
   integrations: [
     svgs({
