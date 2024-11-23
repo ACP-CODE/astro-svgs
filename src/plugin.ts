@@ -65,10 +65,10 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
     },
 
     async handleHotUpdate({ file, server }) {
-      const wathFile =
+      const includes =
         inputs.some((input) => file.includes(input!)) && file.endsWith(".svg");
 
-      if (wathFile || typeFileUpdated) {
+      if (includes || typeFileUpdated) {
         const { data: Data, hash: Hash } = await compose(options);
 
         if (Hash !== hash) {
