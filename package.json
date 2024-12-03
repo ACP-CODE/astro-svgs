@@ -59,7 +59,7 @@
     "prettier": "^3.4.1",
     "unbuild": "^2.0.0"
   },
-  "publishConfig": {
-    "provenance": true
+  "peerDependencies": {
+    "astro": "^4.0.0"
   }
 }
