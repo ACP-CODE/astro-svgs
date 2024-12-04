@@ -1,6 +1,6 @@
 {
   "name": "astro-svgs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A compact solution for SVG sprites in Astro projects. It automates symbol ID management, supports hot reloading, and generates optimized SVG sprites with minimal setup—ideal for seamless SVG icon integration.",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -23,6 +23,7 @@
   "scripts": {
     "fmt": "prettier --write .",
     "build": "unbuild",
+    "dev": "unbuild --watch",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -55,11 +56,11 @@
   },
   "homepage": "https://github.com/ACP-CODE/astro-svgs#readme",
   "devDependencies": {
-    "astro": "^5.0.1",
+    "astro": "^4.16.10",
     "prettier": "^3.4.1",
     "unbuild": "^2.0.0"
   },
   "peerDependencies": {
-    "astro": "^4.0.0"
+    "astro": "^4.14.0 || ^5.0.0"
   }
 }
