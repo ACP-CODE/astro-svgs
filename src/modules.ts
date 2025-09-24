@@ -26,7 +26,7 @@ export async function genTypeFile(
   cfg: AstroConfig,
 ): Promise<boolean> {
   const inputs = Array.isArray(opts.input) ? opts.input : [opts.input];
-  let typeDir = `.astro/integrations/${name}`
+  let typeDir = `.astro/integrations/${name}`;
 
   if (
     !inputs.some((input) => file.includes(input!)) ||
