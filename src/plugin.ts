@@ -47,7 +47,13 @@ export function create(options: SVGsOptions, config: AstroConfig): Plugin {
           fileName: `${config.build.assets}/sprite.${hash}.svg`,
           source: data,
         });
-        filePath = `${config.build.assetsPrefix ?? ""}/${this.getFileName(fileId)}`;
+        const assetsPrefix =
+          typeof config.build.assetsPrefix === "object"
+            ? (config.build.assetsPrefix.svg ??
+              config.build.assetsPrefix.fallback)
+            : (config.build.assetsPrefix ?? "");
+
+        filePath = `${assetsPrefix}/${this.getFileName(fileId)}`;
       }
     },
 
