@@ -1,6 +1,6 @@
 {
   "name": "astro-svgs",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A compact solution for SVG sprites in Astro projects. It automates symbol ID management, supports hot reloading, and generates optimized SVG sprites with minimal setup—ideal for seamless SVG icon integration.",
   "type": "module",
   "main": "./dist/index.mjs",
